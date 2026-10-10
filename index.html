@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A 3D music visualizer for any song: iTunes previews, Web Audio and Three.js." />
+    <title>Music Visualizer</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <canvas id="scene"></canvas>
+
+    <aside class="panel" id="search-panel">
+      <header>
+        <h1>Music Visualizer</h1>
+        <button id="collapse" class="icon" aria-label="Collapse search" title="Collapse">–</button>
+      </header>
+      <div class="body">
+        <form id="search-form" class="search" autocomplete="off">
+          <input id="search" type="search" placeholder="Search any song or artist…" aria-label="Search" />
+          <select id="country" aria-label="iTunes store country" title="iTunes store country"></select>
+        </form>
+        <div id="chips" class="chips"></div>
+        <div id="search-status" class="muted small" role="status" aria-live="polite"></div>
+        <ul id="results" class="results"></ul>
+        <div class="sources">
+          <button id="mic" title="Visualize your microphone (M)">🎤 Microphone</button>
+          <label class="button" title="Visualize a file on your computer (or drop one anywhere)">
+            📁 Audio file
+            <input id="file" type="file" accept="audio/*" hidden />
+          </label>
+        </div>
+      </div>
+    </aside>
+
+    <aside class="panel" id="settings" hidden>
+      <h2>Settings</h2>
+      <label class="check"><input type="checkbox" data-setting="bloom" /> Bloom</label>
+      <label class="check"><input type="checkbox" data-setting="trails" /> Motion trails</label>
+      <label class="check"><input type="checkbox" data-setting="lens" /> Lens (aberration, grain)</label>
+      <label class="check"><input type="checkbox" data-setting="particles" /> Particles</label>
+      <label class="check"><input type="checkbox" data-setting="autoCamera" /> Auto camera <kbd>C</kbd></label>
+      <label class="check"><input type="checkbox" data-setting="shake" /> Camera shake on beats</label>
+      <label class="check"><input type="checkbox" data-setting="autoNext" /> Play next result when a preview ends</label>
+      <label class="field">
+        <span>Sensitivity</span>
+        <input type="range" min="0.4" max="2" step="0.05" data-setting="sensitivity" />
+      </label>
+      <div id="meters" class="meters" aria-hidden="true"></div>
+      <p class="muted small">
+        <kbd>Space</kbd> play/pause · <kbd>N</kbd>/<kbd>P</kbd> next/previous · <kbd>←</kbd><kbd>→</kbd> seek ·
+        <kbd>/</kbd> search · <kbd>H</kbd> hide UI · <kbd>F</kbd> fullscreen
+      </p>
+    </aside>
+
+    <div id="top-buttons">
+      <button id="settings-toggle" class="round" aria-label="Settings" title="Settings">⚙</button>
+      <button id="hide-ui" class="round" aria-label="Hide interface (H)" title="Hide interface (H)">◱</button>
+      <button id="fullscreen" class="round" aria-label="Fullscreen (F)" title="Fullscreen (F)">⛶</button>
+    </div>
+
+    <footer class="panel" id="player">
+      <img id="np-art" alt="" hidden />
+      <div class="np">
+        <div id="np-title">Nothing playing</div>
+        <div id="np-artist" class="muted">Search for a song, or try one of the suggestions</div>
+      </div>
+      <div class="transport">
+        <button id="prev" class="round" aria-label="Previous (P)" title="Previous (P)">⏮</button>
+        <button id="play" class="round big" aria-label="Play (Space)" title="Play (Space)">▶</button>
+        <button id="next" class="round" aria-label="Next (N)" title="Next (N)">⏭</button>
+      </div>
+      <div class="progress">
+        <span id="time" class="mono">0:00</span>
+        <input id="seek" type="range" min="0" max="30" step="0.01" value="0" aria-label="Seek" />
+        <span id="duration" class="mono">0:30</span>
+      </div>
+      <div class="extras">
+        <span id="bpm" class="badge mono" title="Estimated tempo">— BPM</span>
+        <div id="swatches" class="swatches" title="Palette from the album cover"></div>
+        <label class="volume" title="Volume">
+          🔊 <input id="volume" type="range" min="0" max="1" step="0.01" aria-label="Volume" />
+        </label>
+        <a id="itunes-link" class="link" target="_blank" rel="noopener" hidden>Apple Music ↗</a>
+      </div>
+    </footer>
+
+    <div id="start" hidden>
+      <button id="start-button">
+        <img id="start-art" alt="" />
+        <span>
+          <strong id="start-title"></strong>
+          <span id="start-artist" class="muted"></span>
+          <span class="hint">Click to play</span>
+        </span>
+      </button>
+    </div>
+
+    <div id="drop" hidden>Drop an audio file to visualize it</div>
+    <div id="toast" role="status" aria-live="polite" hidden>
+      <span class="msg"></span>
+      <button class="icon" aria-label="Dismiss">×</button>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
